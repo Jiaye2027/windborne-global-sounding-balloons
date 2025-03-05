@@ -29,9 +29,10 @@ jobs:
         run: jupyter nbconvert --ClearOutputPreprocessor.enabled=True --to notebook --inplace windborne.ipynb
 
       - name: Run Jupyter Notebook
+        env:
+          FORCE_EXECUTION: ${{ github.run_id }}  # Unique ID for each run
         run: |
-          echo "🚀 Running Jupyter Notebook..."
-          jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb --debug || exit 1
+          jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb --debug
           jupyter nbconvert --to json windborne.ipynb --output docs/output.json || exit 1
           echo "✅ Notebook execution completed."
 
