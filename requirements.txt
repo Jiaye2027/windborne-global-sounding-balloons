@@ -1,8 +1,0 @@
-fastapi
-uvicorn
-tensorflow
-numpy
-requests
-scikit-learn
-langchain_openai
-langchain_core
