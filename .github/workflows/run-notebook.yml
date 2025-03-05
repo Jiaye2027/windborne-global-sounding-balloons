@@ -1,46 +1,47 @@
 name: Run Jupyter Notebook Daily
-
 on:
   schedule:
-    - cron: "30 13 * * *"  # Runs at 1:30 PM UTC
+    - cron: "30 13 * * *"  # Runs daily at 1:30 PM UTC
   workflow_dispatch:       # Allows manual execution
-
 jobs:
   run-notebook:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+      
       - name: Set Up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
-
+          python-version: "3.10"
+      
       - name: Install Dependencies
         run: |
-          pip install jupyter nbconvert pandas numpy openai tensorflow scikit-learn transformers
-
-      - name: Set OpenAI API Key
-        run: echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
-
-      - name: Run Jupyter Notebook
+          python -m pip install --upgrade pip
+          pip install jupyter nbconvert pandas numpy scipy requests scikit-learn tensorflow openai langchain-openai langchain
+      
+      - name: Set Environment Variables
         run: |
-          echo "🚀 Running Jupyter Notebook..."
-          ls -lh windborne.ipynb  # Check if the notebook exists
-          jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb --debug || exit 1
-          echo "✅ Notebook execution completed."
-
-      - name: Debug - Check If Output Exists
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+      
+      - name: Run Jupyter Notebook with Verbose Output
+        run: |
+          mkdir -p docs
+          echo "🚀 Starting Notebook Execution..."
+          jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb --ExecutePreprocessor.timeout=1800 --debug
+          echo "✅ Notebook Execution Completed."
+      
+      - name: Debug - Show Execution Details
         run: |
           echo "🔍 Checking output files..."
+          ls -lh
           ls -lh docs/
-
+          cat docs/output.ipynb || echo "No output notebook found"
+      
       - name: Commit and Push Output
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git add docs/index.html docs/output.ipynb docs/output.json
+          git add docs/index.html docs/output.ipynb docs/output.json || true
           git commit -m "Auto-run notebook - $(date)" || echo "No changes to commit"
           git push origin main || echo "No changes to push"
