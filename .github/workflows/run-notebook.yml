@@ -25,11 +25,11 @@ jobs:
       - name: Set OpenAI API Key
         run: echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
 
-      - name: Run Jupyter Notebook with Debugging
+      - name: Run Jupyter Notebook
         run: |
           echo "🚀 Running Jupyter Notebook..."
           ls -lh windborne.ipynb  # Check if the notebook exists
-          jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb --debug
+          jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb --debug || exit 1
           echo "✅ Notebook execution completed."
 
       - name: Debug - Check If Output Exists
