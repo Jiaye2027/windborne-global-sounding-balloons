@@ -40,15 +40,12 @@ jobs:
 
       - name: Run Jupyter Notebook
         env:
-          FORCE_EXECUTION: ${{ github.run_id }}  # Unique ID for each run (forces execution)
+          FORCE_EXECUTION: ${{ github.run_id }}
         run: |
           echo "🚀 Running Jupyter Notebook..."
           jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb --debug || exit 1
-          jupyter nbconvert --to json windborne.ipynb --output docs/output.json || exit 1
+          jupyter nbconvert --to html windborne.ipynb --output docs/index.html
           echo "✅ Notebook execution completed."
-
-      - name: Convert Notebook to HTML
-        run: jupyter nbconvert --to html windborne.ipynb --output docs/index.html
 
       - name: Debug - Check If Output Exists
         run: |
