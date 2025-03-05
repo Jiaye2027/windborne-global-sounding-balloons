@@ -2,8 +2,9 @@ name: Run Jupyter Notebook Daily
 
 on:
   schedule:
-    - cron: "0 9 * * *"  # Runs every day at 9 AM UTC
-  workflow_dispatch:  # Allows manual execution
+    - cron: "0 9 * * *"    # Runs at 9:00 AM UTC
+    - cron: "30 13 * * *"  # Runs at 1:30 PM UTC
+  workflow_dispatch:       # Allows manual execution
 
 jobs:
   run-notebook:
@@ -24,8 +25,8 @@ jobs:
 
       - name: Run Jupyter Notebook
         run: |
-          jupyter nbconvert --to notebook --execute notebook.ipynb --output docs/output.ipynb
-          jupyter nbconvert --to html --execute notebook.ipynb --output docs/index.html
+          jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb
+          jupyter nbconvert --to html --execute windborne.ipynb --output docs/index.html
 
       - name: Commit and Push Output
         run: |
