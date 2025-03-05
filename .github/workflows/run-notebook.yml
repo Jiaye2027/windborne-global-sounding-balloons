@@ -20,19 +20,30 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          pip install --upgrade pip  # Ensure latest pip version
           pip install jupyter nbconvert pandas numpy openai tensorflow scikit-learn transformers
+          pip install langchain langchain_core langchain_openai langchain_community  # Added missing dependencies
+
+      - name: Check Installed Python Packages
+        run: |
+          echo "✅ Checking installed packages..."
+          pip list | grep langchain || true  # Debugging: Ensure langchain is installed
 
       - name: Set OpenAI API Key
         run: echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+
+      - name: Ensure Output Directory Exists
+        run: mkdir -p docs  # Prevents errors if docs/ is missing
 
       - name: Clear Notebook Output Before Running
         run: jupyter nbconvert --ClearOutputPreprocessor.enabled=True --to notebook --inplace windborne.ipynb
 
       - name: Run Jupyter Notebook
         env:
-          FORCE_EXECUTION: ${{ github.run_id }}  # Unique ID for each run
+          FORCE_EXECUTION: ${{ github.run_id }}  # Unique ID for each run (forces execution)
         run: |
-          jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb --debug
+          echo "🚀 Running Jupyter Notebook..."
+          jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb --debug || exit 1
           jupyter nbconvert --to json windborne.ipynb --output docs/output.json || exit 1
           echo "✅ Notebook execution completed."
 
