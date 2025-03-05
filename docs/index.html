@@ -7716,7 +7716,9 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">html_output</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">insights_text</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">content</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+<span class="n">html_output</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
 <span class="s2">&lt;html&gt;&lt;head&gt;&lt;title&gt;Windborne Balloon Analysis&lt;/title&gt;&lt;/head&gt;</span>
 <span class="s2">&lt;body&gt;</span>
 <span class="s2">    &lt;h1&gt;Windborne Balloon Analysis&lt;/h1&gt;</span>
@@ -7725,10 +7727,12 @@ a.anchor-link {
 <span class="s2">    &lt;h2&gt;Predicted Next Position:&lt;/h2&gt;</span>
 <span class="s2">    &lt;pre&gt;</span><span class="si">{</span><span class="n">predicted_next_position</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">&lt;/pre&gt;</span>
 <span class="s2">    &lt;h2&gt;Insights:&lt;/h2&gt;</span>
-<span class="s2">    &lt;p&gt;</span><span class="si">{</span><span class="n">report</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&lt;/p&gt;</span>
+<span class="s2">    &lt;pre&gt;</span><span class="si">{</span><span class="n">insights_text</span><span class="si">}</span><span class="s2">&lt;/pre&gt;  &lt;!-- Ensures correct display --&gt;</span>
 <span class="s2">&lt;/body&gt;&lt;/html&gt;</span>
 <span class="s2">"""</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"docs/index.html"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+
+<span class="c1"># Write HTML file</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"docs/index.html"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html_output</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Output saved in docs/index.html"</span><span class="p">)</span>
