@@ -125,3 +125,7 @@ def predict(request: PredictionRequest):
     })
 
     return {"prediction": prediction, "insights": report.content}
+
+@app.get("/")
+def home():
+    return {"message": "FastAPI is running! Go to /docs to test the API."}
