@@ -44,15 +44,8 @@ jobs:
         run: |
           echo "🚀 Running Jupyter Notebook..."
           jupyter nbconvert --to notebook --execute windborne.ipynb --output docs/output.ipynb --debug || exit 1
-          jupyter nbconvert --to html windborne.ipynb --output docs/index.html
           echo "✅ Notebook execution completed."
           
-      - name: Debug - Print Report Content
-        run: |
-          echo "🔍 Debugging Report Content..."
-          cat docs/index.html
-
-
       - name: Debug - Check If Output Exists
         run: |
           echo "🔍 Checking output files..."
